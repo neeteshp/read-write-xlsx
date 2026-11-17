@@ -1,4 +1,4 @@
-# excel-file-rw
+# read-write-xlsx
 
 Read **and** write `.xlsx` files in the browser and Node.js — with **zero dependencies**.
 
@@ -26,14 +26,14 @@ what's built into the platform:
 ## Install
 
 ```bash
-npm install excel-file-rw
+npm install read-write-xlsx
 ```
 
 ## Reading
 
 ```js
 // Node.js (accepts a file path, URL, Buffer or readable stream)
-import { readXlsxFile, readSheetNamesFromFile } from 'excel-file-rw/node'
+import { readXlsxFile, readSheetNamesFromFile } from 'read-write-xlsx/node'
 
 const rows = await readXlsxFile('report.xlsx')            // first visible sheet
 const rows2 = await readXlsxFile('report.xlsx', { sheet: 'Q3' }) // or { sheet: 2 }
@@ -42,7 +42,7 @@ const names = await readSheetNamesFromFile('report.xlsx')
 
 ```js
 // Browser (File, Blob, ArrayBuffer or Uint8Array)
-import { readXlsx, readSheetNames } from 'excel-file-rw'
+import { readXlsx, readSheetNames } from 'read-write-xlsx'
 
 input.addEventListener('change', async () => {
   const rows = await readXlsx(input.files[0])
@@ -62,7 +62,7 @@ saved value until someone opens and saves it in Excel or LibreOffice.
 ### Reading with a schema
 
 ```js
-import { readXlsxFile, Integer } from 'excel-file-rw/node'
+import { readXlsxFile, Integer } from 'read-write-xlsx/node'
 
 const { rows, errors } = await readXlsxFile('people.xlsx', {
   schema: {
@@ -87,7 +87,7 @@ marked `required` is missing from the header, you get a `missing column` error.
 
 ```js
 // Node.js
-import { writeXlsxFile } from 'excel-file-rw/node'
+import { writeXlsxFile } from 'read-write-xlsx/node'
 
 await writeXlsxFile([
   ['Name', 'Amount', 'Paid', 'Due'],
@@ -103,7 +103,7 @@ await writeXlsxFile([
 
 ```js
 // Browser
-import { writeXlsx } from 'excel-file-rw'
+import { writeXlsx } from 'read-write-xlsx'
 
 const bytes = await writeXlsx(rows, { sheet: 'Export' })
 const blob = new Blob([bytes], {
@@ -158,7 +158,7 @@ A file written with a schema can be read back with the matching read schema, so 
 ### Multiple sheets
 
 ```js
-import { writeXlsxFileSheets } from 'excel-file-rw/node'
+import { writeXlsxFileSheets } from 'read-write-xlsx/node'
 
 await writeXlsxFileSheets([
   { name: 'Summary', data: summaryRows, stickyRowsCount: 1 },
@@ -173,11 +173,11 @@ In the browser, use `writeXlsxSheets(sheets, options)` → `Uint8Array`. Invalid
 
 | Import | For | Extras |
 | --- | --- | --- |
-| `excel-file-rw` | everything (in Node it resolves to `/node`) | |
-| `excel-file-rw/node` | Node.js | file paths and streams, `node:zlib`, `readXlsxFile`, `writeXlsxFile`, … |
-| `excel-file-rw/browser` | browsers, workers, edge, Deno | `readXlsx`, `writeXlsx`, … only |
+| `read-write-xlsx` | everything (in Node it resolves to `/node`) | |
+| `read-write-xlsx/node` | Node.js | file paths and streams, `node:zlib`, `readXlsxFile`, `writeXlsxFile`, … |
+| `read-write-xlsx/browser` | browsers, workers, edge, Deno | `readXlsx`, `writeXlsx`, … only |
 
-The package is ESM-only. From CommonJS, use `await import('excel-file-rw')`, or `require()` on
+The package is ESM-only. From CommonJS, use `await import('read-write-xlsx')`, or `require()` on
 Node ≥ 20.19 / 22.12, which can load ES modules directly.
 
 ## Limits (by design, to stay small)

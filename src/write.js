@@ -442,7 +442,7 @@ export async function writeXlsxSheets(sheets, options = {}) {
     '</cp:coreProperties>'
   const app =
     XML_HEADER +
-    '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>excel-file-rw</Application></Properties>'
+    '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>read-write-xlsx</Application></Properties>'
 
   const workbook =
     XML_HEADER +

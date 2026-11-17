@@ -1,5 +1,5 @@
 {
-  "name": "excel-file-rw",
+  "name": "read-write-xlsx",
   "version": "1.0.0",
   "description": "Read and write .xlsx files in the browser and Node.js with zero dependencies. Combines the read-excel-file and write-excel-file style APIs.",
   "type": "module",
