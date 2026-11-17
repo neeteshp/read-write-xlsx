@@ -35,7 +35,7 @@ npm install read-write-xlsx
 
 ```js
 // Node.js (accepts a file path, URL, Buffer or readable stream)
-import { readXlsxFile, readSheetNamesFromFile } from 'read-write-xlsx/node'
+import { readXlsxFile, readSheetNamesFromFile } from 'read-write-xlsx'
 
 const rows = await readXlsxFile('report.xlsx')            // first visible sheet
 const rows2 = await readXlsxFile('report.xlsx', { sheet: 'Q3' }) // or { sheet: 2 }
@@ -64,7 +64,7 @@ saved value until someone opens and saves it in Excel or LibreOffice.
 ### Reading with a schema
 
 ```js
-import { readXlsxFile, Integer } from 'read-write-xlsx/node'
+import { readXlsxFile, Integer } from 'read-write-xlsx'
 
 const { rows, errors } = await readXlsxFile('people.xlsx', {
   schema: {
@@ -89,7 +89,7 @@ marked `required` is missing from the header, you get a `missing column` error.
 
 ```js
 // Node.js
-import { writeXlsxFile } from 'read-write-xlsx/node'
+import { writeXlsxFile } from 'read-write-xlsx'
 
 await writeXlsxFile([
   ['Name', 'Amount', 'Paid', 'Due'],
@@ -160,7 +160,7 @@ A file written with a schema can be read back with the matching read schema, so 
 ### Multiple sheets
 
 ```js
-import { writeXlsxFileSheets } from 'read-write-xlsx/node'
+import { writeXlsxFileSheets } from 'read-write-xlsx'
 
 await writeXlsxFileSheets([
   { name: 'Summary', data: summaryRows, stickyRowsCount: 1 },
@@ -173,11 +173,18 @@ In the browser, use `writeXlsxSheets(sheets, options)` → `Uint8Array`. Invalid
 
 ## Entry points
 
-| Import | For | Extras |
-| --- | --- | --- |
-| `read-write-xlsx` | everything (in Node it resolves to `/node`) | |
-| `read-write-xlsx/node` | Node.js | file paths and streams, `node:zlib`, `readXlsxFile`, `writeXlsxFile`, … |
-| `read-write-xlsx/browser` | browsers, workers, edge, Deno | `readXlsx`, `writeXlsx`, … only |
+Import everything from `read-write-xlsx`. The right build is picked automatically:
+
+| Environment | What you get |
+| --- | --- |
+| Node.js | file paths, URLs, Buffers and streams; files are saved with `filePath`; uses the faster `node:zlib` |
+| Browsers, workers, edge, Deno, Bun | `File`, `Blob`, `ArrayBuffer` or `Uint8Array` input; `CompressionStream` for deflate |
+
+`readXlsxFile`, `readSheetNamesFromFile`, `readXlsxFileSheets`, `writeXlsxFile` and `writeXlsxFileSheets`
+exist in both. Outside Node, passing a file path or the `filePath` option throws an error that says so, and
+`writeXlsxFile` returns a `Uint8Array` instead of a `Buffer`.
+
+To pin one build, import `read-write-xlsx/node` or `read-write-xlsx/browser` explicitly.
 
 The package is ESM-only. From CommonJS, use `await import('read-write-xlsx')`, or `require()` on
 Node ≥ 20.19 / 22.12, which can load ES modules directly.

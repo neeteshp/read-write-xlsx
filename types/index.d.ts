@@ -191,6 +191,51 @@ export function writeXlsxSheets(
   options?: WorkbookOptions
 ): Promise<Uint8Array>
 
+// ---------------- *File helpers (same names in Node and the browser) ----------------
+
+/**
+ * File paths, URLs and streams work in Node.js only. In the browser, pass a File, Blob,
+ * ArrayBuffer or Uint8Array.
+ */
+export type FileInput = XlsxInput | string | URL | AsyncIterable<Uint8Array>
+
+/** `filePath` works in Node.js only (it throws in the browser). */
+export interface FilePathOption {
+  filePath?: string
+}
+
+export function readXlsxFile(input: FileInput, options?: ReadOptions): Promise<Row[]>
+export function readXlsxFile<T = Record<string, any>>(
+  input: FileInput,
+  options: ReadOptions & { schema: ReadSchema }
+): Promise<SchemaResult<T>>
+
+export function readSheetNamesFromFile(input: FileInput): Promise<string[]>
+
+export function readXlsxFileSheets(
+  input: FileInput,
+  options?: ReadOptions
+): Promise<{ name: string; data: Row[] }[]>
+export function readXlsxFileSheets<T = Record<string, any>>(
+  input: FileInput,
+  options: ReadOptions & { schema: ReadSchema }
+): Promise<{ name: string; data: SchemaResult<T> }[]>
+
+/** Returns a Buffer in Node.js and a Uint8Array elsewhere. */
+export function writeXlsxFile(
+  data: WriteCell[][],
+  options?: WriteOptions & FilePathOption
+): Promise<Uint8Array>
+export function writeXlsxFile<T>(
+  data: T[],
+  options: WriteOptions & { schema: WriteSchemaColumn<T>[] } & FilePathOption
+): Promise<Uint8Array>
+
+export function writeXlsxFileSheets(
+  sheets: SheetDefinition[],
+  options?: WorkbookOptions & FilePathOption
+): Promise<Uint8Array>
+
 // ---------------- Utilities ----------------
 
 export function excelSerialToDate(serial: number, date1904?: boolean): Date
