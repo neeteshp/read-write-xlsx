@@ -1,0 +1,40 @@
+name: Publish to npm
+
+# Runs when you publish a GitHub release (e.g. tag v1.0.0).
+# Authenticates with npm through trusted publishing (OIDC), so no token or 2FA code is needed.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # lets npm verify this run came from this repo and workflow
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@11
+
+      - name: Check release tag matches package.json version
+        if: github.event_name == 'release'
+        run: |
+          PKG="v$(node -p "require('./package.json').version")"
+          TAG="${{ github.event.release.tag_name }}"
+          if [ "$PKG" != "$TAG" ]; then
+            echo "::error::Release tag $TAG does not match package.json version $PKG"
+            exit 1
+          fi
+
+      - run: npm test
+
+      - run: npm publish
