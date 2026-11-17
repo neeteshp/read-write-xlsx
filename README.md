@@ -2,6 +2,8 @@
 
 Read **and** write `.xlsx` files in the browser and Node.js — with **zero dependencies**.
 
+**[▶ Try the live demo](https://neeteshp.github.io/read-write-xlsx/demo/)**: read, write and validate spreadsheets right in your browser.
+
 The API follows the two popular single-purpose packages
 [`read-excel-file`](https://www.npmjs.com/package/read-excel-file) and
 [`write-excel-file`](https://www.npmjs.com/package/write-excel-file), combined in one package.
@@ -194,6 +196,10 @@ Node ≥ 20.19 / 22.12, which can load ES modules directly.
 npm test            # node:test, no dev dependencies
 npm run fixtures    # regenerate test files (needs python3 + openpyxl, optionally LibreOffice)
 ```
+
+To run the demo locally, serve the repo root (for example `python3 -m http.server`) and open `/demo/`.
+It imports `../src/index.js` directly, with no build step. Pushes to `main` publish it to GitHub Pages
+through `.github/workflows/pages.yml`.
 
 ## License
 

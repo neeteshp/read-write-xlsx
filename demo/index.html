@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>read-write-xlsx · live demo</title>
+  <meta name="description" content="Read and write .xlsx files in your browser with zero dependencies. Nothing is uploaded.">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <div>
+        <h1>read-write-xlsx</h1>
+        <p class="tag">Read and write <code>.xlsx</code> files in the browser and Node.js, with zero dependencies.</p>
+      </div>
+      <nav class="links">
+        <a href="https://github.com/neeteshp/read-write-xlsx">GitHub</a>
+        <a href="https://www.npmjs.com/package/read-write-xlsx">npm</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="note" id="support"></p>
+
+    <!-- ================= READ ================= -->
+    <section class="card" id="read">
+      <div class="card-head">
+        <h2><span class="num">1</span> Read a file</h2>
+        <p>Drop any <code>.xlsx</code> file from Excel, LibreOffice, Google Sheets and so on. It's parsed on this page with <code>readXlsxSheets()</code>. Nothing is uploaded.</p>
+      </div>
+
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+        <strong>Drop an .xlsx file here</strong>
+        <span>or click to choose one</span>
+      </label>
+      <div class="row-actions">
+        <button type="button" class="ghost" id="sample">No file handy? Generate a sample and read it</button>
+        <label class="check"><input type="checkbox" id="opt-dates" checked> Convert dates</label>
+        <label class="check"><input type="checkbox" id="opt-trim" checked> Trim empty rows/cols</label>
+      </div>
+
+      <div id="read-out" hidden>
+        <div class="meta" id="read-meta"></div>
+        <div class="tabs" id="read-tabs" role="tablist"></div>
+        <div class="view-toggle">
+          <button type="button" class="seg on" data-view="grid">Grid</button>
+          <button type="button" class="seg" data-view="json">JSON</button>
+        </div>
+        <div class="grid-wrap" id="read-grid"></div>
+        <pre class="json" id="read-json" hidden></pre>
+      </div>
+      <p class="error" id="read-error" hidden></p>
+    </section>
+
+    <!-- ================= WRITE ================= -->
+    <section class="card" id="write">
+      <div class="card-head">
+        <h2><span class="num">2</span> Write a file</h2>
+        <p>Pick an example and edit the code if you like, then run it. The file is built in the page, read back so you can check the result, and offered as a download you can open in Excel.</p>
+      </div>
+
+      <div class="examples" id="examples" role="tablist"></div>
+      <div class="editor">
+        <div class="editor-bar">
+          <span class="file-label" id="code-label">example.js</span>
+          <span class="hint">Your code can use <code>writeXlsx</code>, <code>writeXlsxSheets</code>, <code>readXlsx</code>, <code>Integer</code> and must <code>return</code> the bytes.</span>
+        </div>
+        <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+      </div>
+      <div class="row-actions">
+        <button type="button" class="primary" id="run">▶ Run</button>
+        <a class="button" id="download" hidden>⬇ Download <span id="dl-name"></span></a>
+        <button type="button" class="ghost" id="reset">Reset example</button>
+        <span class="meta" id="write-meta"></span>
+      </div>
+      <p class="error" id="write-error" hidden></p>
+      <div id="write-out" hidden>
+        <h3>Read back with <code>readXlsxSheets()</code></h3>
+        <div class="tabs" id="write-tabs" role="tablist"></div>
+        <div class="grid-wrap" id="write-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================= SCHEMA ================= -->
+    <section class="card" id="schema">
+      <div class="card-head">
+        <h2><span class="num">3</span> Read with a schema</h2>
+        <p>A schema turns rows into typed objects and reports a validation error for each bad cell. The sample below contains some bad data on purpose.</p>
+      </div>
+      <div class="split">
+        <div>
+          <h3>Sheet</h3>
+          <div class="grid-wrap" id="schema-sheet"></div>
+        </div>
+        <div>
+          <h3>Schema</h3>
+          <pre class="code-block"><code id="schema-code"></code></pre>
+        </div>
+      </div>
+      <div class="split">
+        <div>
+          <h3><code>rows</code></h3>
+          <pre class="json" id="schema-rows"></pre>
+        </div>
+        <div>
+          <h3><code>errors</code></h3>
+          <div id="schema-errors"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card install">
+      <h2>Install</h2>
+      <pre class="code-block"><code>npm install read-write-xlsx</code></pre>
+<pre class="code-block"><code>import { readXlsx, writeXlsx } from 'read-write-xlsx'
+
+const rows  = await readXlsx(input.files[0])          // File, Blob, ArrayBuffer, Uint8Array
+const bytes = await writeXlsx([['Hello', 'World']])   // → Uint8Array</code></pre>
+    </section>
+  </main>
+
+  <footer class="wrap foot">MIT licensed · This page loads the library's plain ES modules with no bundler.</footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
